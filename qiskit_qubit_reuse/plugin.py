@@ -19,27 +19,6 @@ from qiskit.transpiler.preset_passmanagers.plugin import PassManagerStagePlugin
 from .qubit_reuse import QubitReuse
 
 
-def _choose_layout_condition(property_set):
-    # layout hasn't been set yet
-    return not property_set["layout"]
-
-
-def _vf2_match_not_found(property_set):
-    # If a layout hasn't been set by the time we run vf2 layout we need to
-    # run layout
-    if property_set["layout"] is None:
-        return True
-    # if VF2 layout stopped for any reason other than solution found we need
-    # to run layout since VF2 didn't converge.
-    if (
-        property_set["VF2Layout_stop_reason"] is not None
-        and property_set["VF2Layout_stop_reason"]
-        is not VF2LayoutStopReason.SOLUTION_FOUND
-    ):
-        return True
-    return False
-
-
 class QubitReusePlugin(PassManagerStagePlugin):
     """Plugin for using vf2 partial layout."""
 

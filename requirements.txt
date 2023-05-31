@@ -1,0 +1,2 @@
+qiskit-terra>=0.24.0
+rustworkx>=0.12.0

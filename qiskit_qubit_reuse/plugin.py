@@ -13,17 +13,40 @@
 """Qubit Reuse Init plugin."""
 
 from qiskit.transpiler import PassManager
-from qiskit.transpiler.preset_passmanagers import common
+from qiskit.transpiler.passes import UnitarySynthesis, Unroll3qOrMore
+from qiskit.transpiler.preset_passmanagers import common, generate_preset_pass_manager
 from qiskit.transpiler.preset_passmanagers.plugin import PassManagerStagePlugin
 
 from .qubit_reuse import QubitReuse
 
 
 class QubitReusePlugin(PassManagerStagePlugin):
-    """Plugin for using vf2 partial layout."""
+    """Plugin for using Qubit Reset and Reuse."""
 
     def pass_manager(self, pass_manager_config, optimization_level=None):
         """build qubit reuse init plugin stage pass manager."""
         # TODO: Build plugin
-        plugin_stage = PassManager()
+        # Build init state depending on the configs passed. Extract init
+        preset_stage = generate_preset_pass_manager(
+            optimization_level= optimization_level,
+            target= pass_manager_config.target,
+            basis_gates= pass_manager_config.basis_gates,
+            inst_map= pass_manager_config.inst_map,
+            backend_properties= pass_manager_config.backend_properties,
+            instruction_durations= pass_manager_config.instruction_durations,
+            timing_constraints= pass_manager_config.timing_constraints
+        )
+        # Try and get init attribute, if nonexistent, create a regular pass
+        plugin_stage = getattr(preset_stage, "init", PassManager([UnitarySynthesis(
+            target= pass_manager_config.target,
+            basis_gates= pass_manager_config.basis_gates,
+            backend_props= pass_manager_config.backend_properties,
+        ), Unroll3qOrMore(
+            target= pass_manager_config.target,
+            basis_gates= pass_manager_config.basis_gates
+        )]))
+        # Append qubit reuse.
+        plugin_stage.append(
+            QubitReuse(target=pass_manager_config.target)
+        )
         return plugin_stage

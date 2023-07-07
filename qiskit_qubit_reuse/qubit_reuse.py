@@ -32,6 +32,12 @@ class QubitReuse(TransformationPass):
 
         Args:
             target (Target): A target representing the backend device to run ``QubitReuse`` on.
+            type (str): A string specifying which method will be used. Defaults to "default".
+
+        **References:**
+
+        [1] Matthew DeCross et al. "Qubit-reuse compilation with mid-circuit measurement and reset"
+        `arXiv:2210.0.08039v1 <https://arxiv.org/abs/2210.08039v1>`_
         """
         super().__init__()
         self.target = target

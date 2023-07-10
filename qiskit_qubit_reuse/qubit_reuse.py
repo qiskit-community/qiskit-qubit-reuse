@@ -57,7 +57,4 @@ class QubitReuse(TransformationPass):
 
             result = regular if regular_qubits <= dual_qubits else dual
         
-        if result.dag.num_qubits() > self.target.num_qubits:
-            raise TranspilerError(f"Obtained circuit has more qubits than its target {self.target.description}.")
-        
         return result.dag

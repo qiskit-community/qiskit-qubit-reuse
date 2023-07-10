@@ -61,7 +61,7 @@ setup(
     zip_safe=False,
     entry_points={
         "qiskit.transpiler.init": [
-            "qubit_reuse = qiskit_qubit_reuse.plugin:QubitReuseInitPlugin",
+            "qubit_reuse = qiskit_qubit_reuse.plugin:QubitReusePlugin",
         ],
     },
 )

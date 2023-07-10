@@ -120,7 +120,7 @@ class Greedy:
                 # Add a new qubit to the dag.
                 self.dag.add_qubits([Qubit()])
     
-    def __create_subpath(self, qubit: Qubit | int, until_node: DAGOpNode = None) -> None:
+    def __create_subpath(self, qubit: Qubit | int, until_node: DAGOpNode | None = None) -> None:
         """
         Recursively creates a subpath for a qubit in the circuit, based on its causal cone.
         """

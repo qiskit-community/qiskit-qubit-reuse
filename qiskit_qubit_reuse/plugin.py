@@ -25,7 +25,6 @@ class QubitReusePlugin(PassManagerStagePlugin):
 
     def pass_manager(self, pass_manager_config, optimization_level=None):
         """build qubit reuse init plugin stage pass manager."""
-        # TODO: Build plugin
         # Build init state depending on the configs passed. Extract init
         preset_stage = generate_preset_pass_manager(
             optimization_level= optimization_level,

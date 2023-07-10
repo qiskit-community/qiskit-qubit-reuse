@@ -13,7 +13,7 @@
 """Greedy class to generate the qubit-reduced DAGCircuit"""
 
 from qiskit.dagcircuit import DAGCircuit, DAGNode, DAGOpNode, DAGInNode, DAGOutNode
-from qiskit.circuit import Qubit, ClassicalRegister, Clbit
+from qiskit.circuit import QuantumRegister, Qubit, ClassicalRegister, Clbit
 from collections import deque
 from qiskit.circuit.library import Reset
 
@@ -38,6 +38,9 @@ class Greedy:
         self.dag.add_creg(self.__creg)
         for index, _ in self.__causal_cones.items():
             self.__create_subpath(qubit=index)
+        
+        self.__qreg = QuantumRegister(bits = self.dag.qubits, name="q")
+        self.dag.add_qreg(self.__qreg)
 
         if self.__dual:
             self.dag = self.dag.reverse_ops()

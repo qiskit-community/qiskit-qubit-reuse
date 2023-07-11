@@ -12,6 +12,7 @@
 
 """Greedy class to generate the qubit-reduced DAGCircuit"""
 
+import copy
 from qiskit.dagcircuit import DAGCircuit, DAGNode, DAGOpNode, DAGInNode, DAGOutNode
 from qiskit.circuit import QuantumRegister, Qubit, ClassicalRegister, Clbit
 from collections import deque
@@ -173,9 +174,14 @@ class Greedy:
                         # if self.__qubit_mapping.get(self.__qubit_indices[op_qubit], None) == None:
                         #     # If the qubit has not been added, make the recursion call, make it stop at current node.
                         self.__create_subpath(op_qubit, until_node=current_node)
-                    # Apply the operation
+                    # Apply the operation, check for condition
+                    if current_node.op.condition:
+                        oper = copy.copy(current_node.op)
+                        oper.condition = (self.__creg, oper.condition[1])
+                    else:
+                        oper = current_node.op
                     self.dag.apply_operation_back(
-                        op=current_node.op,
+                        op=oper,
                         qargs=(
                             self.dag.qubits[
                                 self.__qubit_mapping[self.__qubit_indices[qbit]]

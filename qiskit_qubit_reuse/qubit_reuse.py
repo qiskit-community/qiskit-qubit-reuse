@@ -47,7 +47,7 @@ class QubitReuse(TransformationPass):
         """run the qubit reuse pass method"""
         if self.type == "dual":
             result = Greedy(dag=dag, dual=True)
-        elif self.type == "regular":
+        elif self.type == "normal":
             result = Greedy(dag)
         else:
             regular = Greedy(dag=dag)

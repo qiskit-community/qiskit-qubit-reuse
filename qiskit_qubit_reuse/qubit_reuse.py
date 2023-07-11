@@ -56,5 +56,5 @@ class QubitReuse(TransformationPass):
             dual_qubits = dual.dag.num_qubits()
 
             result = regular if regular_qubits <= dual_qubits else dual
-        
+
         return result.dag

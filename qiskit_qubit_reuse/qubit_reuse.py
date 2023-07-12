@@ -14,9 +14,7 @@
 import logging
 
 from qiskit.transpiler.basepasses import TransformationPass
-from qiskit.transpiler.exceptions import TranspilerError
 from .qubit_reuse_greedy import Greedy
-from collections import deque
 
 logger = logging.getLogger(__name__)
 

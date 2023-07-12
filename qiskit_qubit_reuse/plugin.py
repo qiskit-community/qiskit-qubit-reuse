@@ -14,7 +14,7 @@
 
 from qiskit.transpiler import PassManager
 from qiskit.transpiler.passes import UnitarySynthesis, Unroll3qOrMore
-from qiskit.transpiler.preset_passmanagers import common, generate_preset_pass_manager
+from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 from qiskit.transpiler.preset_passmanagers.plugin import PassManagerStagePlugin
 
 from .qubit_reuse import QubitReuse

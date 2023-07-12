@@ -49,3 +49,5 @@ qc = random_circuit(16, 4, measure=True)
 
 transpiled_qc = transpile(qc, backend=FakeGuadalupeV2(), init_method="qubit_reuse")
 ```
+
+This entry point provides the option with the least amount of qubits. If you want to specifically use the normal or dual circuit, you can specifcy that by using the `qubit_reuse_normal` or the `qubit_reuse_dual` endpoints.

@@ -1,6 +1,6 @@
 # Qubit Reuse By Reset Plugin
 
-This repository contains an experimental transpiler pass called `qubit_reuse` which is executed at the end of the `init` stage of transpilation. This techniques is based on: Matthew DeCross et al. "Qubit-reuse compilation with mid-circuit measurement and reset" `arXiv:2210.0.08039v1 <https://arxiv.org/abs/2210.08039v1>`_
+This repository contains an experimental transpiler pass called `qubit_reuse` which is executed at the end of the `init` stage of transpilation. This techniques is based on: Matthew DeCross et al. "Qubit-reuse compilation with mid-circuit measurement and reset" [arXiv:2210.0.08039v1](https://arxiv.org/abs/2210.08039v1)
 
 ### Background
 

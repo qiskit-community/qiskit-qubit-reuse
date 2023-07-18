@@ -28,7 +28,7 @@ git clone https://github.com/qiskit-community/qiskit-qubit-reuse
 And then installing locally:
 
 ```zsh
-pip install ./qiskit-qubit-reuse-main/
+pip install ./qiskit-qubit-reuse
 ```
 If you have the proper authentication keys, you can install it remotely by using:
 

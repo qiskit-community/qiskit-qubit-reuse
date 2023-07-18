@@ -23,7 +23,7 @@ Before re-arranging a qubit, we need to check if there are any qubit that have b
 This package is not available through pypi, but can be installed by cloning this repository:
 
 ```zsh
-git clone https://github.ibm.com/Matthew-Treinish/qiskit-qubit-reuse.git
+git clone https://github.com/qiskit-community/qiskit-qubit-reuse
 ```
 And then installing locally:
 
@@ -33,7 +33,7 @@ pip install ./qiskit-qubit-reuse-main/
 If you have the proper authentication keys, you can install it remotely by using:
 
 ```zsh
-pip install git+https://github.ibm.com/Matthew-Treinish/qiskit-qubit-reuse
+pip install git+https://github.com/qiskit-community/qiskit-qubit-reuse
 ```
 
 ## Usage

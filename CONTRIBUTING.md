@@ -12,8 +12,8 @@ All new coded feature proposals should be done via Pull Requests. All sumbission
 
 ## Code formatting:
 
-Please use [Black](https://pypi.org/project/black/) for code formatting.
-Make sure to install the package by using:
+This project uses [Black](https://pypi.org/project/black/) and [Ruff](https://beta.ruff.rs/docs/) for code formatting.
+To install and use Black:
 
 ```sh
 pip install black
@@ -22,8 +22,13 @@ For automated code formatting with black:
 ```sh
 black qiskit_qubit_reuse
 ```
-
 For code formatting review, use:
 ```sh
 black --check qiskit_qubit_reuse
+```
+
+To install and use Ruff:
+```sh
+pip install ruff
+ruff check .
 ```

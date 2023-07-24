@@ -20,9 +20,7 @@ from qiskit.transpiler.preset_passmanagers.plugin import PassManagerStagePlugin
 from .qubit_reuse import QubitReuse
 
 
-def generate_optimization_manager(
-    pass_manager_config, optimization_level=None, type="default"
-):
+def generate_optimization_manager(pass_manager_config, optimization_level=None, type="default"):
     # Build init state depending on the configs passed. Extract init
     preset_stage = generate_preset_pass_manager(
         optimization_level=optimization_level,

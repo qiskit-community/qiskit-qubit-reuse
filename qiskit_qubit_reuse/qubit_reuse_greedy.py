@@ -52,9 +52,7 @@ class Greedy:
             self.dag = self.dag.reverse_ops()
 
     # Will be removed in future update
-    def filter_out_in_nodes(
-        self, node: DAGNode
-    ) -> bool:  # Filters input and output nodes.
+    def filter_out_in_nodes(self, node: DAGNode) -> bool:  # Filters input and output nodes.
         return isinstance(node, DAGInNode) or isinstance(node, DAGOutNode)
 
     # Will be removed in future update
@@ -89,9 +87,9 @@ class Greedy:
             node_to_check = queue.popleft()
             if not self.filter_out_in_nodes(node_to_check):
                 qubit_set = set(node_to_check.qargs)
-                if qubit_set.intersection(
-                    qubits_to_check
-                ) and not self.filter_unsupported(node_to_check):
+                if qubit_set.intersection(qubits_to_check) and not self.filter_unsupported(
+                    node_to_check
+                ):
                     qubits_to_check = qubits_to_check.union(qubit_set)
 
                 for node in self.__dag.predecessors(node_to_check):
@@ -102,7 +100,8 @@ class Greedy:
 
     def __get_causal_cones(self) -> dict[int, set[Qubit]]:
         """
-        Returns a sorted dictionary with each qubit as key and their respective causal cone as value.
+        Returns a sorted dictionary with each qubit as key and
+        their respective causal cone as value.
         """
         result = dict(
             sorted(
@@ -119,13 +118,12 @@ class Greedy:
 
     def __assign_qubit(self, index) -> None:
         """
-        Check if a new qubit from the new graph needs to be assigned to a qubit from the old circuit.
+        Check if a new qubit from the new graph needs to be
+        assigned to a qubit from the old circuit.
 
         If so, it either picks from a measured qubit or adds a new one to the circuit.
         """
-        if (
-            self.__qubit_mapping.get(index, None) == None
-        ):  # In case the qubit hasn't been assigned
+        if self.__qubit_mapping.get(index, None) is None:  # In case the qubit hasn't been assigned
             # Case measure is available
             if len(self.__measured_qubits) > 0:
                 # Collect from the measured qubits queue.
@@ -144,9 +142,7 @@ class Greedy:
                 # Add a new qubit to the dag.
                 self.dag.add_qubits([Qubit()])
 
-    def __create_subpath(
-        self, qubit: Qubit | int, until_node: DAGOpNode | None = None
-    ) -> None:
+    def __create_subpath(self, qubit: Qubit | int, until_node: DAGOpNode | None = None) -> None:
         """
         Recursively creates a subpath for a qubit in the circuit, based on its causal cone.
         """
@@ -163,16 +159,15 @@ class Greedy:
             if current_node == until_node:  # Stop if we have reached the until node.
                 break
             # If the current node has not been visited and is an instance of OpNode
-            if current_node not in self.__visited_nodes and isinstance(
-                current_node, DAGOpNode
-            ):
+            if current_node not in self.__visited_nodes and isinstance(current_node, DAGOpNode):
                 # Add to the set of visited nodes.
                 self.__visited_nodes.add(current_node)
                 # Check if any of the qubits in qargs has not been added to the reduced circuit.
                 if not current_node.op.name == "barrier":
                     for op_qubit in current_node.qargs:
                         # if self.__qubit_mapping.get(self.__qubit_indices[op_qubit], None) == None:
-                        #     # If the qubit has not been added, make the recursion call, make it stop at current node.
+                        #     # If the qubit has not been added, make the recursion call,
+                        #       make it stop at current node.
                         self.__create_subpath(op_qubit, until_node=current_node)
                     # Apply the operation, check for condition
                     if current_node.op.condition:
@@ -183,9 +178,7 @@ class Greedy:
                     self.dag.apply_operation_back(
                         op=oper,
                         qargs=(
-                            self.dag.qubits[
-                                self.__qubit_mapping[self.__qubit_indices[qbit]]
-                            ]
+                            self.dag.qubits[self.__qubit_mapping[self.__qubit_indices[qbit]]]
                             for qbit in current_node.qargs
                         ),
                         cargs=(
@@ -196,9 +189,7 @@ class Greedy:
                 # If measuring, add the qubit to the list of available qubits.
                 if not self.__dual and current_node.op.name == "measure":
                     self.__measured_qubits.append(
-                        self.__qubit_mapping[
-                            self.__qubit_indices[current_node.qargs[0]]
-                        ]
+                        self.__qubit_mapping[self.__qubit_indices[current_node.qargs[0]]]
                     )
             elif (
                 self.__dual

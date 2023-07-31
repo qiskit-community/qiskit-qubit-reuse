@@ -51,53 +51,6 @@ class Greedy:
         if self.__dual:
             self.dag = self.dag.reverse_ops()
 
-    # Will be removed in future update
-    def filter_out_in_nodes(self, node: DAGNode) -> bool:  # Filters input and output nodes.
-        return isinstance(node, DAGInNode) or isinstance(node, DAGOutNode)
-
-    # Will be removed in future update
-    def filter_unsupported(self, node: DAGOpNode) -> bool:  # Discriminated barriers.
-        return node.op.name == "barrier"
-
-    # Will be removed in future update
-    def get_qubit_input_node(
-        self, qubit_index: int
-    ) -> tuple[Qubit, DAGNode]:  # Returns qubit and input node from a qubit index.
-        input_nodes = self.__dag.input_map
-        qubit = list(input_nodes.keys())[qubit_index]
-        return (qubit, input_nodes.get(qubit, None))
-
-    # Will be removed in future update
-    def get_qubit_output_node(
-        self, qubit_index: int
-    ) -> tuple[Qubit, DAGNode]:  # Returns qubit and output node from an index.
-        output_nodes = self.__dag.output_map
-        qubit = list(output_nodes.keys())[qubit_index]
-        return (qubit, output_nodes.get(qubit, None))
-
-    # Will be removed in future update
-    def get_causal_cone(self, qubit_index: int) -> set[Qubit]:
-        if qubit_index >= self.__dag.num_qubits():
-            raise IndexError(f"Qubit index {qubit_index} is out of range")
-        qubit, output_node = self.get_qubit_output_node(qubit_index)
-        qubits_to_check = set({qubit})
-        queue = deque(self.__dag.predecessors(output_node))
-
-        while queue:
-            node_to_check = queue.popleft()
-            if not self.filter_out_in_nodes(node_to_check):
-                qubit_set = set(node_to_check.qargs)
-                if qubit_set.intersection(qubits_to_check) and not self.filter_unsupported(
-                    node_to_check
-                ):
-                    qubits_to_check = qubits_to_check.union(qubit_set)
-
-                for node in self.__dag.predecessors(node_to_check):
-                    if not self.filter_out_in_nodes(node):
-                        if qubits_to_check.intersection(set(node.qargs)):
-                            queue.append(node)
-        return qubits_to_check
-
     def __get_causal_cones(self) -> dict[int, set[Qubit]]:
         """
         Returns a sorted dictionary with each qubit as key and
@@ -107,8 +60,8 @@ class Greedy:
             sorted(
                 list(
                     {
-                        index: self.get_causal_cone(index)
-                        for index in range(self.__dag.num_qubits())
+                        index: self.__dag.quantum_causal_cone(qubit)
+                        for index, qubit in enumerate(self.__dag.qubits)
                     }.items()
                 ),
                 key=lambda item: len(item[1]),

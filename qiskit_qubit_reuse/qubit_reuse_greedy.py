@@ -108,7 +108,7 @@ class Greedy:
             qubit = list(self.__qubit_indices)[qubit]
         # Get all nodes on wire
         queue = list(self.__dag.nodes_on_wire(qubit))
-        for current_node in queue:
+        for index, current_node in enumerate(queue):
             if current_node == until_node:  # Stop if we have reached the until node.
                 break
             # If the current node has not been visited and is an instance of OpNode
@@ -140,7 +140,14 @@ class Greedy:
                         ),
                     )
                 # If measuring, add the qubit to the list of available qubits.
-                if not self.__dual and current_node.op.name == "measure":
+                if (
+                    not self.__dual
+                    and current_node.op.name == "measure"
+                    and (
+                        len(queue) > index + 1
+                        and isinstance(queue[index + 1], DAGOutNode)
+                    )
+                ):
                     self.__measured_qubits.append(
                         self.__qubit_mapping[self.__qubit_indices[current_node.qargs[0]]]
                     )

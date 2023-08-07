@@ -13,9 +13,8 @@
 """Greedy class to generate the qubit-reduced DAGCircuit"""
 
 import copy
-from qiskit.dagcircuit import DAGCircuit, DAGNode, DAGOpNode, DAGInNode, DAGOutNode
+from qiskit.dagcircuit import DAGCircuit, DAGOpNode, DAGOutNode
 from qiskit.circuit import QuantumRegister, Qubit, ClassicalRegister, Clbit
-from collections import deque
 from qiskit.circuit.library import Reset
 
 
@@ -143,10 +142,7 @@ class Greedy:
                 if (
                     not self.__dual
                     and current_node.op.name == "measure"
-                    and (
-                        len(queue) > index + 1
-                        and isinstance(queue[index + 1], DAGOutNode)
-                    )
+                    and (len(queue) > index + 1 and isinstance(queue[index + 1], DAGOutNode))
                 ):
                     self.__measured_qubits.append(
                         self.__qubit_mapping[self.__qubit_indices[current_node.qargs[0]]]

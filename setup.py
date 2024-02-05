@@ -32,7 +32,7 @@ with open(README_PATH) as readme_file:
 
 setup(
     name="qiskit-qubit-reuse",
-    version="0.0.1",
+    version="0.0.2",
     description="A Qiskit's compiler plugin to reuse qubits using midcircuit measurement",
     long_description=README,
     long_description_content_type="text/markdown",

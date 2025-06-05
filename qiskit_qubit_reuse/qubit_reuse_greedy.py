@@ -117,27 +117,26 @@ class Greedy:
                 # Check if any of the qubits in qargs has not been added to the reduced circuit.
                 if not current_node.op.name == "barrier":
                     for op_qubit in current_node.qargs:
-                        # if self.__qubit_mapping.get(self.__qubit_indices[op_qubit], None) == None:
-                        #     # If the qubit has not been added, make the recursion call,
-                        #       make it stop at current node.
                         self.__create_subpath(op_qubit, until_node=current_node)
                     # Apply the operation, check for condition
-                    if current_node.op.condition:
+                    if hasattr(current_node.op, "condition"):
                         oper = copy.copy(current_node.op)
                         oper.condition = (self.__creg, oper.condition[1])
                     else:
                         oper = current_node.op
+                    new_qargs = tuple(
+                        self.dag.qubits[self.__qubit_mapping[self.__qubit_indices[qbit]]]
+                        for qbit in current_node.qargs
+                    )
+                    new_cargs = tuple(
+                        self.dag.clbits[self.__cl_indices[clbit]] for clbit in current_node.cargs
+                    )
                     self.dag.apply_operation_back(
                         op=oper,
-                        qargs=(
-                            self.dag.qubits[self.__qubit_mapping[self.__qubit_indices[qbit]]]
-                            for qbit in current_node.qargs
-                        ),
-                        cargs=(
-                            self.dag.clbits[self.__cl_indices[clbit]]
-                            for clbit in current_node.cargs
-                        ),
+                        qargs=new_qargs,
+                        cargs=new_cargs,
                     )
+
                 # If measuring, add the qubit to the list of available qubits.
                 if (
                     not self.__dual

@@ -43,11 +43,11 @@ Once installed, Qiskit is able to detect the `qubit_reuse` plugin via an entry p
 ```py3
 from qiskit.circuit.random import random_circuit
 from qiskit import transpile
-from qiskit.providers.fake_provider import FakeGuadalupeV2
+from qiskit.providers.fake_provider import GenericBackendV2
 
 qc = random_circuit(16, 4, measure=True)
 
-transpiled_qc = transpile(qc, backend=FakeGuadalupeV2(), init_method="qubit_reuse")
+transpiled_qc = transpile(qc, backend=GenericBackendV2(16), init_method="qubit_reuse")
 ```
 
 This entry point provides the option with the least amount of qubits. If you want to specifically use the normal or dual circuit, you can specifcy that by using the `qubit_reuse_normal` or the `qubit_reuse_dual` endpoints.

@@ -26,28 +26,19 @@ def generate_optimization_manager(pass_manager_config, optimization_level=None, 
         optimization_level=optimization_level,
         target=pass_manager_config.target,
         basis_gates=pass_manager_config.basis_gates,
-        inst_map=pass_manager_config.inst_map,
-        backend_properties=pass_manager_config.backend_properties,
-        instruction_durations=pass_manager_config.instruction_durations,
-        timing_constraints=pass_manager_config.timing_constraints,
     )
     # Try and get init attribute, if nonexistent, create a regular pass
-    plugin_stage = getattr(
-        preset_stage,
-        "init",
-        PassManager(
-            [
-                UnitarySynthesis(
-                    target=pass_manager_config.target,
-                    basis_gates=pass_manager_config.basis_gates,
-                    backend_props=pass_manager_config.backend_properties,
-                ),
-                Unroll3qOrMore(
-                    target=pass_manager_config.target,
-                    basis_gates=pass_manager_config.basis_gates,
-                ),
-            ]
-        ),
+    plugin_stage = getattr(preset_stage, "init", None) or PassManager(
+        [
+            UnitarySynthesis(
+                target=pass_manager_config.target,
+                basis_gates=pass_manager_config.basis_gates,
+            ),
+            Unroll3qOrMore(
+                target=pass_manager_config.target,
+                basis_gates=pass_manager_config.basis_gates,
+            ),
+        ]
     )
     # Append qubit reuse.
     plugin_stage.append(QubitReuse(target=pass_manager_config.target, type=type))

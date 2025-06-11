@@ -20,7 +20,13 @@ Before re-arranging a qubit, we need to check if there are any qubit that have b
 
 ## Installation
 
-This package is not available through pypi, but can be installed by cloning this repository:
+This package is available through pypi, and can be installed using the command:
+
+```zsh
+pip install qiskit-qubit-reuse
+```
+
+It can also be installed by cloning this repository:
 
 ```zsh
 git clone https://github.com/qiskit-community/qiskit-qubit-reuse

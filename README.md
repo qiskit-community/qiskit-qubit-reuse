@@ -1,5 +1,10 @@
 # Qubit Reuse By Reset Plugin
 
+[![License](https://img.shields.io/github/license/qiskit-community/qiskit-qubit-reuse.svg?)](https://opensource.org/licenses/Apache-2.0) <!--- long-description-skip-begin -->
+[![Current Release](https://img.shields.io/github/release/qiskit-community/qiskit-qubit-reuse.svg?logo=Qiskit)](https://github.com/qiskit-community/qiskit-qubit-reuse/releases)
+[![Downloads](https://img.shields.io/pypi/dm/qiskit-qubit-reuse.svg)](https://pypi.org/project/qiskit-qubit-reuse/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/qiskit-qubit-reuse)
+
 This repository contains an experimental transpiler pass called `qubit_reuse` which is executed at the end of the `init` stage of transpilation. This pass is based on: Matthew DeCross et al. "Qubit-reuse compilation with mid-circuit measurement and reset" [arXiv:2210.0.08039v1](https://arxiv.org/abs/2210.08039v1)
 
 ### Background
@@ -20,7 +25,13 @@ Before re-arranging a qubit, we need to check if there are any qubit that have b
 
 ## Installation
 
-This package is not available through pypi, but can be installed by cloning this repository:
+This package is available through [PyPI](https://pypi.org/project/qiskit-qubit-reuse/), and can be installed using the command:
+
+```zsh
+pip install qiskit-qubit-reuse
+```
+
+It can also be installed by cloning this repository:
 
 ```zsh
 git clone https://github.com/qiskit-community/qiskit-qubit-reuse

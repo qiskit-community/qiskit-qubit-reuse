@@ -119,7 +119,7 @@ class Greedy:
                     for op_qubit in current_node.qargs:
                         self.__create_subpath(op_qubit, until_node=current_node)
                     # Apply the operation, check for condition
-                    if hasattr(current_node.op, "condition"):
+                    if getattr(current_node.op, "condition") is not None:
                         oper = copy.copy(current_node.op)
                         oper.condition = (self.__creg, oper.condition[1])
                     else:

@@ -11,6 +11,7 @@
 # that they have been altered from the originals.
 
 """QubitReuse pass to reduce the number of qubits on an QuantumCircuit"""
+
 import logging
 
 from qiskit.transpiler.basepasses import TransformationPass

@@ -8,7 +8,7 @@ Please use Github Issues for reporting bugs found within this plugin. The same g
 
 ## Code Review
 
-All new coded feature proposals should be done via Pull Requests. All sumbissions will require review by one of the mantainers.
+All new coded feature proposals should be done via Pull Requests. All submissions will require review by one of the maintainers.
 
 ## Code formatting:
 

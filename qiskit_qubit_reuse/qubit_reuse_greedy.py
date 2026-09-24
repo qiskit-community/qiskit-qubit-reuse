@@ -15,18 +15,19 @@
 import copy
 from qiskit.dagcircuit import DAGCircuit, DAGOpNode, DAGOutNode
 from qiskit.circuit import QuantumRegister, Qubit, ClassicalRegister, Clbit
-from qiskit.circuit.library import Reset
+from qiskit.circuit.library import Reset, Barrier
+from qiskit.circuit.controlflow import IfElseOp, WhileLoopOp
 
 
 class Greedy:
     def __init__(self, dag: DAGCircuit, dual: bool = False) -> None:
         # Public variables
-        self.dag = DAGCircuit()
+        self.dag = dag.copy_empty_like()
 
         # Private variables
         self.__dual = dual
         self.__dag: DAGCircuit = dag.reverse_ops() if self.__dual else dag
-        self.__creg = ClassicalRegister(self.__dag.num_clbits())
+
         self.__causal_cones: dict[int, set[Qubit]] = self.__get_causal_cones()
         self.__qubit_indices: dict[Qubit, int] = {
             qubit: i for i, qubit in enumerate(self.__dag.qubits)
@@ -40,12 +41,8 @@ class Greedy:
         self.__current_added_qubit: int = 0
 
         # Initialization
-        self.dag.add_creg(self.__creg)
         for index, _ in self.__causal_cones.items():
             self.__create_subpath(qubit=index)
-
-        self.__qreg = QuantumRegister(bits=self.dag.qubits, name="q")
-        self.dag.add_qreg(self.__qreg)
 
         if self.__dual:
             self.dag = self.dag.reverse_ops()
@@ -68,7 +65,7 @@ class Greedy:
         )
         return result
 
-    def __assign_qubit(self, index) -> None:
+    def __assign_qubit(self, index):
         """
         Check if a new qubit from the new graph needs to be
         assigned to a qubit from the old circuit.
@@ -91,8 +88,6 @@ class Greedy:
                 self.__qubit_mapping[index] = self.__current_added_qubit
                 # Increase latest added qubit index.
                 self.__current_added_qubit += 1
-                # Add a new qubit to the dag.
-                self.dag.add_qubits([Qubit()])
 
     def __create_subpath(self, qubit: Qubit | int, until_node: DAGOpNode | None = None) -> None:
         """
@@ -115,13 +110,12 @@ class Greedy:
                 # Add to the set of visited nodes.
                 self.__visited_nodes.add(current_node)
                 # Check if any of the qubits in qargs has not been added to the reduced circuit.
-                if not current_node.op.name == "barrier":
+                if not isinstance(current_node.op, Barrier):
                     for op_qubit in current_node.qargs:
                         self.__create_subpath(op_qubit, until_node=current_node)
-                    # Apply the operation, check for condition
-                    if getattr(current_node.op, "condition") is not None:
+                    # Apply the operation, check for condition if control flow
+                    if isinstance(current_node.op, (IfElseOp, WhileLoopOp)):
                         oper = copy.copy(current_node.op)
-                        oper.condition = (self.__creg, oper.condition[1])
                     else:
                         oper = current_node.op
                     new_qargs = tuple(

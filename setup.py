@@ -16,7 +16,6 @@ import os
 import re
 from setuptools import setup, find_packages
 
-
 with open("requirements.txt") as f:
     REQUIREMENTS = f.read().splitlines()
 

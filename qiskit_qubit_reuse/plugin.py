@@ -25,18 +25,15 @@ def generate_optimization_manager(pass_manager_config, optimization_level=None, 
     preset_stage = generate_preset_pass_manager(
         optimization_level=optimization_level,
         target=pass_manager_config.target,
-        basis_gates=pass_manager_config.basis_gates,
     )
     # Try and get init attribute, if nonexistent, create a regular pass
     plugin_stage = getattr(preset_stage, "init", None) or PassManager(
         [
             UnitarySynthesis(
                 target=pass_manager_config.target,
-                basis_gates=pass_manager_config.basis_gates,
             ),
             Unroll3qOrMore(
                 target=pass_manager_config.target,
-                basis_gates=pass_manager_config.basis_gates,
             ),
         ]
     )

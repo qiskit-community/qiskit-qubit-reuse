@@ -15,6 +15,7 @@
 import logging
 
 from qiskit.transpiler.basepasses import TransformationPass
+
 from .qubit_reuse_greedy import Greedy
 
 logger = logging.getLogger(__name__)

@@ -109,7 +109,7 @@ class Greedy:
                 # Add to the set of visited nodes.
                 self.__visited_nodes.add(current_node)
                 # Check if any of the qubits in qargs has not been added to the reduced circuit.
-                if not isinstance(current_node.op, Barrier):
+                if current_node.name != "barrier":
                     for op_qubit in current_node.qargs:
                         self.__create_subpath(op_qubit, until_node=current_node)
                     # Apply the operation, check for condition if control flow

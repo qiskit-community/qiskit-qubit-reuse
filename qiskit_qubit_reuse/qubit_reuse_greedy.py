@@ -16,7 +16,7 @@ import copy
 
 from qiskit.circuit import Clbit, Qubit
 from qiskit.circuit.controlflow import IfElseOp, WhileLoopOp
-from qiskit.circuit.library import Barrier, Reset
+from qiskit.circuit.library import Reset
 from qiskit.dagcircuit import DAGCircuit, DAGOpNode, DAGOutNode
 
 

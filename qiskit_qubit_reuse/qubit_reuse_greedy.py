@@ -56,9 +56,9 @@ class Greedy:
         result = dict(
             sorted(
                 {
-                        index: self.__dag.quantum_causal_cone(qubit)
-                        for index, qubit in enumerate(self.__dag.qubits)
-                    }.items(),
+                    index: self.__dag.quantum_causal_cone(qubit)
+                    for index, qubit in enumerate(self.__dag.qubits)
+                }.items(),
                 key=lambda item: len(item[1]),
             )
         )

@@ -12,9 +12,7 @@
 
 """Qubit Reuse Init plugin."""
 
-from qiskit.transpiler import PassManager
-from qiskit.transpiler.passes import UnitarySynthesis, Unroll3qOrMore
-from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager, generate_unroll_3q
 from qiskit.transpiler.preset_passmanagers.plugin import PassManagerStagePlugin
 
 from .qubit_reuse import QubitReuse
@@ -27,15 +25,8 @@ def generate_optimization_manager(pass_manager_config, optimization_level=None, 
         target=pass_manager_config.target,
     )
     # Try and get init attribute, if nonexistent, create a regular pass
-    plugin_stage = getattr(preset_stage, "init", None) or PassManager(
-        [
-            UnitarySynthesis(
-                target=pass_manager_config.target,
-            ),
-            Unroll3qOrMore(
-                target=pass_manager_config.target,
-            ),
-        ]
+    plugin_stage = getattr(preset_stage, "init", None) or generate_unroll_3q(
+        target=pass_manager_config.target
     )
     # Append qubit reuse.
     plugin_stage.append(QubitReuse(target=pass_manager_config.target, type=type))

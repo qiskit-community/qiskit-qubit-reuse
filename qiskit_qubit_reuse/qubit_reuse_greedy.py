@@ -13,10 +13,11 @@
 """Greedy class to generate the qubit-reduced DAGCircuit"""
 
 import copy
-from qiskit.dagcircuit import DAGCircuit, DAGOpNode, DAGOutNode
-from qiskit.circuit import QuantumRegister, Qubit, ClassicalRegister, Clbit
-from qiskit.circuit.library import Reset, Barrier
+
+from qiskit.circuit import Clbit, Qubit
 from qiskit.circuit.controlflow import IfElseOp, WhileLoopOp
+from qiskit.circuit.library import Barrier, Reset
+from qiskit.dagcircuit import DAGCircuit, DAGOpNode, DAGOutNode
 
 
 class Greedy:
@@ -41,7 +42,7 @@ class Greedy:
         self.__current_added_qubit: int = 0
 
         # Initialization
-        for index, _ in self.__causal_cones.items():
+        for index in self.__causal_cones:
             self.__create_subpath(qubit=index)
 
         if self.__dual:
@@ -54,12 +55,10 @@ class Greedy:
         """
         result = dict(
             sorted(
-                list(
-                    {
+                {
                         index: self.__dag.quantum_causal_cone(qubit)
                         for index, qubit in enumerate(self.__dag.qubits)
-                    }.items()
-                ),
+                    }.items(),
                 key=lambda item: len(item[1]),
             )
         )

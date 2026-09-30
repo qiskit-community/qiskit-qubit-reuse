@@ -14,7 +14,8 @@
 
 import os
 import re
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 with open("requirements.txt") as f:
     REQUIREMENTS = f.read().splitlines()
@@ -26,7 +27,7 @@ with open(README_PATH) as readme_file:
         "<!--- long-description-skip-begin -->.*<!--- long-description-skip-end -->",
         "",
         readme_file.read(),
-        flags=re.S | re.M,
+        flags=re.DOTALL | re.MULTILINE,
     )
 
 setup(
